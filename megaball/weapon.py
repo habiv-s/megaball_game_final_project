@@ -72,5 +72,5 @@ class Weapon:
         if not self.active:
             return
 
-        for s in self.shots:
-            pyxel.blt(shake_x + s[0] - 10, shake_y + s[1] - 10, 0, 21, 231, 21, 21, 8)
+        for shot in self.shots:
+            pyxel.blt(shake_x + shot[0] - 10, shake_y + shot[1] - 10, 0, 21, 231, 21, 21, 8)

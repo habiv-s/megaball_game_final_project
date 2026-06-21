@@ -15,7 +15,7 @@ def contains_other(x1, y1, r1, x2, y2, r2):
     dy = y1 - y2
     dist = dx * dx + dy * dy
     radius_sum = r1 + r2
-    return not (radiusDiff * radiusDiff < dist) and (dist < radius_sum * radius_sum)
+    return not (radius_diff * radius_diff < dist) and (dist < radius_sum * radius_sum)
 
 
 def contains_point(x, y, radius, px, py):

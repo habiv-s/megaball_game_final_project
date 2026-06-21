@@ -8,20 +8,20 @@ def angle_reflect(incidence_angle, surface_angle):
     return (angle + 360) % 360
 
 
-def sign_triangle(p1, p2, p3):
-    return (p1[0] - p3[0]) * (p2[1] - p3[1]) - (p2[0] - p3[0]) * (p1[1] - p3[1])
+def sign_triangle(point_1, point_2, point_3):
+    return (point_1[0] - point_3[0]) * (point_2[1] - point_3[1]) - (point_2[0] - point_3[0]) * (point_1[1] - point_3[1])
 
 
 def is_point_in_triangle(px, py, ax, ay, bx, by, cx, cy):
     # print("Checking point [{a},{b}] in tri [{c}][{d}], [{e}][{f}], [{g}][{h}] ({i})".format(
     #    a=px, b=py, c=ax, d=ay, e=bx, f=by, g=cx, h=cy, i=pyxel.frame_count
     # ))
-    d1 = sign_triangle([px, py], [ax, ay], [bx, by])
-    d2 = sign_triangle([px, py], [bx, by], [cx, cy])
-    d3 = sign_triangle([px, py], [cx, cy], [ax, ay])
+    sign_ab = sign_triangle([px, py], [ax, ay], [bx, by])
+    sign_bc = sign_triangle([px, py], [bx, by], [cx, cy])
+    sign_ca = sign_triangle([px, py], [cx, cy], [ax, ay])
 
-    has_neg = (d1 < 0) or (d2 < 0) or (d3 < 0)
-    has_pos = (d1 > 0) or (d2 > 0) or (d3 > 0)
+    has_neg = (sign_ab < 0) or (sign_bc < 0) or (sign_ca < 0)
+    has_pos = (sign_ab > 0) or (sign_bc > 0) or (sign_ca > 0)
 
     # print("return: " + str(not(has_neg and has_pos)))
 
