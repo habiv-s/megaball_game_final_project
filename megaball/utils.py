@@ -51,8 +51,8 @@ def circle_rect_overlap(circle_x, circle_y, circle_radius, rect_x, rect_y, rect_
 
 
 def get_angle_deg(x1, y1, x2, y2):
-    degs = math.degrees(math.atan2(y2 - y1, x2 - x1))
-    return (degs + 360) % 360
+    degree = math.degrees(math.atan2(y2 - y1, x2 - x1))
+    return (degree + 360) % 360
 
 
 def get_tile_x(index):
@@ -85,9 +85,9 @@ def ease_out_cubic(x):
 
 
 def draw_number_shadowed(x, y, num, zeropad=0):
-    strnum = str(num)
+    string_num = str(num)
     if zeropad > 0:
-        strnum = strnum.zfill(zeropad)
+        string_num = string_num.zfill(zeropad)
 
-    for i in range(len(strnum)):
-        pyxel.blt(x + i * 8, y, 0, 16 + int(strnum[i]) * 8, 56, 8, 8, 8)
+    for i in range(len(string_num)):
+        pyxel.blt(x + i * 8, y, 0, 16 + int(string_num[i]) * 8, 56, 8, 8, 8)
