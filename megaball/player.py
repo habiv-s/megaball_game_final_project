@@ -51,14 +51,14 @@ class Player:
     def _do_solid_collisions(self, stage):
         new_x = self.x + self.vx
 
-        for b in stage.solid_rects:
+        for wall_rect in stage.solid_rects:
             if utils.circle_rect_overlap(
-                new_x, self.y, self.radius, b[0], b[1], b[2], b[3]
+                new_x, self.y, self.radius, wall_rect[0], wall_rect[1], wall_rect[2], wall_rect[3]
             ):
-                if self.x > b[0] + b[2]:  # was prev to right of border.
-                    new_x = b[0] + b[2] + self.radius
-                elif self.x < b[0]:  # was prev to left of border.
-                    new_x = b[0] - self.radius
+                if self.x > wall_rect[0] + wall_rect[2]:  # was prev to right of border.
+                    new_x = wall_rect[0] + wall_rect[2] + self.radius
+                elif self.x < wall_rect[0]:  # was prev to left of border.
+                    new_x = wall_rect[0] - self.radius
 
                 self.vx *= -HIT_SOLID_DAMP
                 stage.player_hit_solid()
@@ -66,14 +66,14 @@ class Player:
 
         new_y = self.y + self.vy
 
-        for b in stage.solid_rects:
+        for wall_rect in stage.solid_rects:
             if utils.circle_rect_overlap(
-                self.x, new_y, self.radius, b[0], b[1], b[2], b[3]
+                self.x, new_y, self.radius, wall_rect[0], wall_rect[1], wall_rect[2], wall_rect[3]
             ):
-                if self.y > b[1] + b[3]:  # was prev below border.
-                    new_y = b[1] + b[3] + self.radius
-                elif self.y < b[1]:  # was prev above border.
-                    new_y = b[1] - self.radius
+                if self.y > wall_rect[1] + wall_rect[3]:  # was prev below border.
+                    new_y = wall_rect[1] + wall_rect[3] + self.radius
+                elif self.y < wall_rect[1]:  # was prev above border.
+                    new_y = wall_rect[1] - self.radius
 
                 self.vy *= -HIT_SOLID_DAMP
                 stage.player_hit_solid()

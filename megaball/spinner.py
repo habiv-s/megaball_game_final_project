@@ -39,28 +39,28 @@ class Spinner:
 
         self.respawn_ticks = MAX_RESPAWN_TICKS
 
-    def _set_new_position(self, stageObj):
-        px = stageObj.player.x
-        py = stageObj.player.y
+    def _set_new_position(self, stage_obj):
+        px = stage_obj.player.x
+        py = stage_obj.player.y
         loc = None
         loclist = [
-            stage.SPAWN_SECTOR_TOPLEFT,
-            stage.SPAWN_SECTOR_BOTTOMLEFT,
-            stage.SPAWN_SECTOR_TOPRIGHT,
-            stage.SPAWN_SECTOR_BOTTOMRIGHT,
+            stage.SPAWN_SECTOR_TOP_LEFT,
+            stage.SPAWN_SECTOR_BOTTOM_LEFT,
+            stage.SPAWN_SECTOR_TOP_RIGHT,
+            stage.SPAWN_SECTOR_BOTTOM_RIGHT,
         ]
         if px < 80:
             if py < 75:
-                loclist.remove(stage.SPAWN_SECTOR_TOPLEFT)
+                loclist.remove(stage.SPAWN_SECTOR_TOP_LEFT)
             else:
-                loclist.remove(stage.SPAWN_SECTOR_BOTTOMLEFT)
+                loclist.remove(stage.SPAWN_SECTOR_BOTTOM_LEFT)
         else:
             if py < 75:
-                loclist.remove(stage.SPAWN_SECTOR_TOPRIGHT)
+                loclist.remove(stage.SPAWN_SECTOR_TOP_RIGHT)
             else:
-                loclist.remove(stage.SPAWN_SECTOR_BOTTOMRIGHT)
+                loclist.remove(stage.SPAWN_SECTOR_BOTTOM_RIGHT)
 
-        loc = stageObj.get_random_spawn_loc(random.choice(loclist))
+        loc = stage_obj.get_random_spawn_loc(random.choice(loclist))
         self.x = loc[0]
         self.y = loc[1]
 
@@ -71,28 +71,28 @@ class Spinner:
     def _do_collisions(self, stage):
         new_x = self.x + self.vx
 
-        for b in stage.solid_rects:
+        for wall_rect in stage.solid_rects:
             if utils.circle_rect_overlap(
-                new_x, self.y, self.radius, b[0], b[1], b[2], b[3]
+                new_x, self.y, self.radius, wall_rect[0], wall_rect[1], wall_rect[2], wall_rect[3]
             ):
-                if self.x > b[0] + b[2]:  # was prev to right of border.
-                    new_x = b[0] + b[2] + self.radius
-                elif self.x < b[0]:  # was prev to left of border.
-                    new_x = b[0] - self.radius
+                if self.x > wall_rect[0] + wall_rect[2]:  # was prev to right of border.
+                    new_x = wall_rect[0] + wall_rect[2] + self.radius
+                elif self.x < wall_rect[0]:  # was prev to left of border.
+                    new_x = wall_rect[0] - self.radius
 
                 self.vx *= -1
                 break
 
         new_y = self.y + self.vy
 
-        for b in stage.solid_rects:
+        for wall_rect in stage.solid_rects:
             if utils.circle_rect_overlap(
-                self.x, new_y, self.radius, b[0], b[1], b[2], b[3]
+                self.x, new_y, self.radius, wall_rect[0], wall_rect[1], wall_rect[2], wall_rect[3]
             ):
-                if self.y > b[1] + b[3]:  # was prev below border.
-                    new_y = b[1] + b[3] + self.radius
-                elif self.y < b[1]:  # was prev above border.
-                    new_y = b[1] - self.radius
+                if self.y > wall_rect[1] + wall_rect[3]:  # was prev below border.
+                    new_y = wall_rect[1] + wall_rect[3] + self.radius
+                elif self.y < wall_rect[1]:  # was prev above border.
+                    new_y = wall_rect[1] - self.radius
 
                 self.vy *= -1
                 break
