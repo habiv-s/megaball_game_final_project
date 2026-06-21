@@ -3,9 +3,9 @@ import math
 import pyxel
 
 
-def angle_reflect(incidenceAngle, surfaceAngle):
-    a = surfaceAngle * 2 - incidenceAngle
-    return (a + 360) % 360
+def angle_reflect(incidence_angle, surface_angle):
+    angle = surface_angle * 2 - incidence_angle
+    return (angle + 360) % 360
 
 
 def sign_triangle(p1, p2, p3):
@@ -29,25 +29,25 @@ def is_point_in_triangle(px, py, ax, ay, bx, by, cx, cy):
 
 
 def circle_rect_overlap(cx, cy, cr, rx, ry, rw, rh):
-    closestX = cx
-    closestY = cy
+    closest_x = cx
+    closest_y = cy
 
     if cx < rx:
-        closestX = rx
+        closest_x = rx
     elif cx > rx + rw:
-        closestX = rx + rw
+        closest_x = rx + rw
 
     if cy < ry:
-        closestY = ry
+        closest_y = ry
     elif cy > ry + rh:
-        closestY = ry + rh
+        closest_y = ry + rh
 
-    closestX = closestX - cx
-    closestX *= closestX
-    closestY = closestY - cy
-    closestY *= closestY
+    closest_x = closest_x - cx
+    closest_x *= closest_x
+    closest_y = closest_y - cy
+    closest_y *= closest_y
 
-    return closestX + closestY < cr * cr
+    return closest_x + closest_y < cr * cr
 
 
 def get_angle_deg(x1, y1, x2, y2):

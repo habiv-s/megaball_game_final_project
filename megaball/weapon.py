@@ -44,9 +44,9 @@ class Weapon:
 
         done = True
 
-        for i, s in enumerate(self.shots):
-            s[0] += VEL[i][0]
-            s[1] += VEL[i][1]
+        for index, shot_position in enumerate(self.shots):
+            shot_position[0] += VEL[index][0]
+            shot_position[1] += VEL[index][1]
 
             if done != False and rect.contains_point(
                 0, 0, constants.GAME_WIDTH, constants.GAME_HEIGHT, s[0], s[1]

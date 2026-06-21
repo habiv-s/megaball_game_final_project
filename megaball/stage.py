@@ -150,10 +150,10 @@ STATE_PLAYER_WEAPON = 7
 MAX_SHOW_GAME_OVER_TICKS = 300  # 5 secs
 MAX_SHOW_GAME_COMPLETE_TICKS = 300  # 5 secs
 
-SPAWN_SECTOR_TOPLEFT = 0
-SPAWN_SECTOR_TOPRIGHT = 1
-SPAWN_SECTOR_BOTTOMLEFT = 2
-SPAWN_SECTOR_BOTTOMRIGHT = 3
+SPAWN_SECTOR_TOP_LEFT = 0
+SPAWN_SECTOR_TOP_RIGHT = 1
+SPAWN_SECTOR_BOTTOM_LEFT = 2
+SPAWN_SECTOR_BOTTOM_RIGHT = 3
 
 
 class Stage:
@@ -185,10 +185,10 @@ class Stage:
         self.lights = []  # Light objects
         self.spinners = []  # Spinner objects
 
-        self.en_spawn_locs_topleft = []  # [[x,y],[x,y],[x,y]...]
-        self.en_spawn_locs_topright = []  # [[x,y],[x,y],[x,y]...]
-        self.en_spawn_locs_bottomleft = []  # [[x,y],[x,y],[x,y]...]
-        self.en_spawn_locs_bottomright = []  # [[x,y],[x,y],[x,y]...]
+        self.en_spawn_locs_top_left = []  # [[x,y],[x,y],[x,y]...]
+        self.en_spawn_locs_top_right = []  # [[x,y],[x,y],[x,y]...]
+        self.en_spawn_locs_bottom_left = []  # [[x,y],[x,y],[x,y]...]
+        self.en_spawn_locs_bottom_right = []  # [[x,y],[x,y],[x,y]...]
 
         if self.state != STATE_GAME_COMPLETE:
             for yc in range(HEIGHT_TILES):
@@ -230,14 +230,14 @@ class Stage:
 
                         if xc < 9:
                             if yc < 7:
-                                self.en_spawn_locs_topleft.append(loc)
+                                self.en_spawn_locs_top_left.append(loc)
                             else:
-                                self.en_spawn_locs_bottomleft.append(loc)
+                                self.en_spawn_locs_bottom_left.append(loc)
                         else:
                             if yc < 7:
-                                self.en_spawn_locs_topright.append(loc)
+                                self.en_spawn_locs_top_right.append(loc)
                             else:
-                                self.en_spawn_locs_bottomright.append(loc)
+                                self.en_spawn_locs_bottom_right.append(loc)
 
             # print(self.pockets)
             num_spinners = 0
@@ -267,21 +267,21 @@ class Stage:
             audio.play_music(audio.MUS_IN_GAME)
 
     def get_random_spawn_loc(self, sector):
-        if sector == SPAWN_SECTOR_TOPLEFT:
-            return random.choice(self.en_spawn_locs_topleft)
-        elif sector == SPAWN_SECTOR_TOPRIGHT:
-            return random.choice(self.en_spawn_locs_topright)
-        elif sector == SPAWN_SECTOR_BOTTOMLEFT:
-            return random.choice(self.en_spawn_locs_bottomleft)
-        elif sector == SPAWN_SECTOR_BOTTOMRIGHT:
-            return random.choice(self.en_spawn_locs_bottomright)
+        if sector == SPAWN_SECTOR_TOP_LEFT:
+            return random.choice(self.en_spawn_locs_top_left)
+        elif sector == SPAWN_SECTOR_TOP_RIGHT:
+            return random.choice(self.en_spawn_locs_top_right)
+        elif sector == SPAWN_SECTOR_BOTTOM_LEFT:
+            return random.choice(self.en_spawn_locs_bottom_left)
+        elif sector == SPAWN_SECTOR_BOTTOM_RIGHT:
+            return random.choice(self.en_spawn_locs_bottom_right)
         else:
             ranlist = random.choice(
                 [
-                    self.en_spawn_locs_topleft,
-                    self.en_spawn_locs_topright,
-                    self.en_spawn_locs_bottomleft,
-                    self.en_spawn_locs_bottomright,
+                    self.en_spawn_locs_top_left,
+                    self.en_spawn_locs_top_right,
+                    self.en_spawn_locs_bottom_left,
+                    self.en_spawn_locs_bottom_right,
                 ]
             )
             return random.choice(ranlist)
@@ -450,8 +450,8 @@ class Stage:
             8,
         )
 
-        for i in self.lights:
-            i.draw(shake_x, shake_y)
+        for target_light in self.lights:
+            target_light.draw(shake_x, shake_y)
 
         if self.state == STATE_GAME_COMPLETE:
             pyxel.blt(24 + shake_x, 32 + shake_y, 0, 136, 136, 112, 88)
@@ -459,8 +459,8 @@ class Stage:
         if self.num > 0:
             self.player.draw(shake_x, shake_y)
 
-        for s in self.spinners:
-            s.draw(shake_x, shake_y)
+        for enemy_spinner in self.spinners:
+            enemy_spinner.draw(shake_x, shake_y)
 
         if self.num > 0:
             self.pause_menu.draw(shake_x, shake_y)
