@@ -27,12 +27,12 @@ class ScreenShake:
 
     def update(self):
         if len(self.events) > 0:
-            e = self.events[0]
-            e.ticks -= 1
-            if e.ticks == 0:
+            events = self.events[0]
+            events.ticks -= 1
+            if events.ticks == 0:
                 self.events.pop(0)
                 self.x = 0
                 self.y = 0
             else:
-                self.x = random.randint(-e.magnitude, e.magnitude)
-                self.y = random.randint(-e.magnitude, e.magnitude)
+                self.x = random.randint(-events.magnitude, events.magnitude)
+                self.y = random.randint(-events.magnitude, events.magnitude)
