@@ -28,26 +28,26 @@ def is_point_in_triangle(px, py, ax, ay, bx, by, cx, cy):
     return not (has_neg and has_pos)
 
 
-def circle_rect_overlap(cx, cy, cr, rx, ry, rw, rh):
-    closest_x = cx
-    closest_y = cy
+def circle_rect_overlap(circle_x, circle_y, circle_radius, rect_x, rect_y, rect_width, rect_height):
+    closest_x = circle_x
+    closest_y = circle_y
 
-    if cx < rx:
-        closest_x = rx
-    elif cx > rx + rw:
-        closest_x = rx + rw
+    if circle_x < rect_x:
+        closest_x = rect_x
+    elif circle_x > rect_x + rect_width:
+        closest_x = rect_x + rect_width
 
-    if cy < ry:
-        closest_y = ry
-    elif cy > ry + rh:
-        closest_y = ry + rh
+    if circle_y < rect_y:
+        closest_y = rect_y
+    elif circle_y > rect_y + rect_height:
+        closest_y = rect_y + rect_height
 
-    closest_x = closest_x - cx
+    closest_x = closest_x - circle_x
     closest_x *= closest_x
-    closest_y = closest_y - cy
+    closest_y = closest_y - circle_y
     closest_y *= closest_y
 
-    return closest_x + closest_y < cr * cr
+    return closest_x + closest_y < circle_radius * circle_radius
 
 
 def get_angle_deg(x1, y1, x2, y2):
@@ -67,10 +67,10 @@ def get_tile_index(x, y):
     return (x // 8, y // 8)  # x/8 + (y / 8) * 32
 
 
-def lerp(v, d):
-    # print("delta: " + str(d) + ", v: " + str(v[0]) + "," + str(v[1]))
+def lerp(value_range, delta):
+    # print("delta: " + str(delta) + ", value_range: " + str(value_range[0]) + "," + str(value_range[1]))
     # print()
-    return (v[0] * (1.0 - d)) + (v[1] * d)
+    return (value_range[0] * (1.0 - delta)) + (value_range[1] * delta)
 
 
 def ease_out_expo(x):
