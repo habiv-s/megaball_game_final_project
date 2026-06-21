@@ -1,9 +1,9 @@
 def overlap(x1, y1, r1, x2, y2, r2):
     dx = x1 - x2
     dy = y1 - y2
-    dist = dx * dx + dy * dy
+    distance_squared = dx * dx + dy * dy
     radius_sum = r1 + r2
-    return dist < radius_sum * radius_sum
+    return distance_squared < radius_sum * radius_sum
 
 
 def contains_other(x1, y1, r1, x2, y2, r2):
@@ -13,9 +13,9 @@ def contains_other(x1, y1, r1, x2, y2, r2):
 
     dx = x1 - x2
     dy = y1 - y2
-    dist = dx * dx + dy * dy
+    distance_squared = dx * dx + dy * dy
     radius_sum = r1 + r2
-    return not (radius_diff * radius_diff < dist) and (dist < radius_sum * radius_sum)
+    return not (radius_diff * radius_diff < distance_squared) and (distance_squared < radius_sum * radius_sum)
 
 
 def contains_point(x, y, radius, px, py):

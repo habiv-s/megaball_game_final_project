@@ -108,14 +108,14 @@ class Player:
 
     # a "force" is a list of lists: [[speed, angle]... etc].
     def _apply_forces(self, forces):
-        for f in forces:
+        for force in forces:
             self.vx = max(
                 -MAX_SPEED,
-                min(MAX_SPEED, self.vx + f[0] * math.cos(math.radians(f[1]))),
+                min(MAX_SPEED, self.vx + force[0] * math.cos(math.radians(force[1]))),
             )
             self.vy = max(
                 -MAX_SPEED,
-                min(MAX_SPEED, self.vy + f[0] * math.sin(math.radians(f[1]))),
+                min(MAX_SPEED, self.vy + force[0] * math.sin(math.radians(force[1]))),
             )
             # print("py after: " + str(self.y))
 
@@ -129,23 +129,23 @@ class Player:
         if abs(self.vx) > 0.01 or abs(self.vy) > 0.01:
             return False
 
-        for p in stage.pockets:
-            if rect.contains_point(p[0], p[1], p[2], p[3], self.x, self.y):
+        for pocket in stage.pockets:
+            if rect.contains_point(pocket[0], pocket[1], pocket[2], pocket[3], self.x, self.y):
                 return True
 
     def _do_enemy_collisions(self, stage):
-        for s in stage.spinners:
-            if s.is_dead:
+        for enemy_spinner in stage.spinners:
+            if enemy_spinner.is_dead:
                 continue
-            if circle.overlap(s.x, s.y, s.radius, self.x, self.y, self.radius):
+            if circle.overlap(enemy_spinner.x, enemy_spinner.y, enemy_spinner.radius, self.x, self.y, self.radius):
                 self.state = STATE_DEAD
                 stage.player_hit()
                 return
 
     def _do_light_collisions(self, stage):
-        for s in stage.lights:
-            if rect.contains_point(s.x, s.y, 8, 8, self.x, self.y):
-                if s.got_hit() == True:
+        for target_light in stage.lights:
+            if rect.contains_point(target_light.x, target_light.y, 8, 8, self.x, self.y):
+                if target_light.got_hit() == True:
                     audio.play_sound(audio.SND_HIT_TARGET)
                     if stage.is_complete():
                         self.state = STATE_STAGE_COMPLETE

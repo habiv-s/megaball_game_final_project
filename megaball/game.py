@@ -89,8 +89,8 @@ class Game:
         self.screen_shake.update()
 
     def draw(self):
-        for c in range(palette.NUM_COLOURS):
-            pyxel.pal(palette.DEFAULT[c], self.pal_control.get_col(c))
+        for i in range(palette.NUM_COLOURS):
+            pyxel.pal(palette.DEFAULT[i], self.pal_control.get_col(i))
 
         pyxel.cls(self.pal_control.get_col(0))
 

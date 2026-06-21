@@ -33,26 +33,26 @@ SOUNDS = [
 ]
 
 
-def play_sound(snd, looping=False):
+def play_sound(sound, looping=False):
     if globals.g_sound_on == False:
         return
 
-    if snd not in SOUNDS:
+    if sound not in SOUNDS:
         return
 
     if pyxel.play_pos(3) != -1:
         return
 
-    pyxel.play(3, snd, loop=looping)
+    pyxel.play(3, sound, loop=looping)
 
 
-def play_music(msc, looping=False):
+def play_music(music, looping=False):
     if globals.g_music_on == False:
         return
 
-    if msc not in MUSIC:
+    if music not in MUSIC:
         return
 
     pyxel.stop()
 
-    pyxel.playm(msc, loop=looping)
+    pyxel.playm(music, loop=looping)
