@@ -57,19 +57,19 @@ class FadeControl:
 
     def update(self):
         if len(self.events) > 0:
-            e = self.events[0]
-            e.ticks += 1
+            events = self.events[0]
+            events.ticks += 1
 
-            if e.ticks == e.ticks_per_level:
-                e.ticks = 0
-                if self.current_level < e.new_level:
+            if events.ticks == events.ticks_per_level:
+                events.ticks = 0
+                if self.current_level < events.new_level:
                     self.current_level += 1
-                elif self.current_level > e.new_level:
+                elif self.current_level > events.new_level:
                     self.current_level -= 1
 
-                if self.current_level == e.new_level:
-                    if e.callback is not None:
-                        e.callback()
+                if self.current_level == events.new_level:
+                    if events.callback is not None:
+                        events.callback()
                     self.events.pop(0)
 
 
