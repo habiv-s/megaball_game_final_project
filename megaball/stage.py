@@ -160,17 +160,17 @@ class Stage:
     def __init__(self, game, num):
         self.game = game
         self.num = num
-        self.tm = 0
-        self.tmu = 0
-        self.tmv = num * 16
+        self.tilemap_id = 0
+        self.tilemap_u = 0
+        self.tilemap_v = num * 16
 
         self.state = STATE_INTRO
         if self.num <= 0:
             self.state = STATE_DEMO
         elif self.num == MAX_STAGE_NUM + 1:
-            self.tm = 1
-            self.tmu = 0
-            self.tmv = 0
+            self.tilemap_id = 1
+            self.tilemap_u = 0
+            self.tilemap_v = 0
             self.state = STATE_GAME_COMPLETE
 
         self.solid_rects = [
@@ -191,50 +191,50 @@ class Stage:
         self.en_spawn_locs_bottom_right = []  # [[x,y],[x,y],[x,y]...]
 
         if self.state != STATE_GAME_COMPLETE:
-            for yc in range(HEIGHT_TILES):
-                y = self.tmv + yc
-                for xc in range(WIDTH_TILES):
-                    x = self.tmu + xc
-                    tile = pyxel.tilemaps[self.tm].pget(x, y)
+            for tile_y in range(HEIGHT_TILES):
+                y = self.tilemap_v + tile_y
+                for tile_x in range(WIDTH_TILES):
+                    x = self.tilemap_u + tile_x
+                    tile = pyxel.tilemaps[self.tilemap_id].pget(x, y)
                     if tile == POST_TILE:
-                        self.solid_rects.append([xc * 8 + 8, yc * 8 + 16, 8, 8])
+                        self.solid_rects.append([tile_x * 8 + 8, tile_y * 8 + 16, 8, 8])
                     elif tile in SLOPE_TILES:
-                        self.slopes.append([xc * 8 + 8, yc * 8 + 16])
+                        self.slopes.append([tile_x * 8 + 8, tile_y * 8 + 16])
                     elif tile == LIGHT_TILE:
-                        self.lights.append(light.Light(xc * 8 + 8, yc * 8 + 16))
+                        self.lights.append(light.Light(tile_x * 8 + 8, tile_y * 8 + 16))
 
                     if tile == POCKET_TILE_NW:
                         if (
-                            x < self.tmu + WIDTH_TILES - 1
-                            and y < self.tmv + HEIGHT_TILES - 1
+                            x < self.tilemap_u + WIDTH_TILES - 1
+                            and y < self.tilemap_v + HEIGHT_TILES - 1
                         ):
                             if (
-                                pyxel.tilemaps[self.tm].pget(x + 1, y) == POCKET_TILE_NE
-                                and pyxel.tilemaps[self.tm].pget(x + 1, y + 1)
+                                pyxel.tilemaps[self.tilemap_id].pget(x + 1, y) == POCKET_TILE_NE
+                                and pyxel.tilemaps[self.tilemap_id].pget(x + 1, y + 1)
                                 == POCKET_TILE_SE
-                                and pyxel.tilemaps[self.tm].pget(x, y + 1)
+                                and pyxel.tilemaps[self.tilemap_id].pget(x, y + 1)
                                 == POCKET_TILE_SW
                             ):
-                                self.pockets.append([xc * 8 + 8, yc * 8 + 16, 16, 16])
+                                self.pockets.append([tile_x * 8 + 8, tile_y * 8 + 16, 16, 16])
 
                     if (
                         tile != POST_TILE
-                        and xc > 0
-                        and xc < WIDTH_TILES - 1
-                        and yc > 0
-                        and yc < HEIGHT_TILES - 1
-                        and (xc < 5 or xc > WIDTH_TILES - 6)
-                        and (yc < 5 or yc > HEIGHT_TILES - 6)
+                        and tile_x > 0
+                        and tile_x < WIDTH_TILES - 1
+                        and tile_y > 0
+                        and tile_y < HEIGHT_TILES - 1
+                        and (tile_x < 5 or tile_x > WIDTH_TILES - 6)
+                        and (tile_y < 5 or tile_y > HEIGHT_TILES - 6)
                     ):
-                        loc = [xc * 8 + 8 + 4, yc * 8 + 16 + 4]
+                        loc = [tile_x * 8 + 8 + 4, tile_y * 8 + 16 + 4]
 
-                        if xc < 9:
-                            if yc < 7:
+                        if tile_x < 9:
+                            if tile_y < 7:
                                 self.en_spawn_locs_top_left.append(loc)
                             else:
                                 self.en_spawn_locs_bottom_left.append(loc)
                         else:
-                            if yc < 7:
+                            if tile_y < 7:
                                 self.en_spawn_locs_top_right.append(loc)
                             else:
                                 self.en_spawn_locs_bottom_right.append(loc)
@@ -243,10 +243,10 @@ class Stage:
             num_spinners = 0
             stage_diff_name = stagedata.STAGE_DIFFICULTY[self.num]
             for i in range(len(spinner.TYPES)):
-                en_qty = stagedata.ENEMIES[stage_diff_name][stagedata.SPINNER_KEY][i]
-                for sq in range(en_qty):
-                    loc = self.get_random_spawn_loc(-1)
-                    self.spinners.append(spinner.Spinner(loc[0], loc[1], i))
+                enemy_quantity = stagedata.ENEMIES[stage_diff_name][stagedata.SPINNER_KEY][i]
+                for spawn_count in range(enemy_quantity):
+                    spawn_location = self.get_random_spawn_loc(-1)
+                    self.spinners.append(spinner.Spinner(spawn_location[0], spawn_location[1], i))
 
         self.player = player.Player(75, 75)  # (12, 20)
         if self.state == STATE_GAME_COMPLETE:
@@ -380,8 +380,8 @@ class Stage:
 
     # returns None or angle
     def get_tile_angle(self, x, y):  # x,y is screen pixels.
-        tile = pyxel.tilemaps[self.tm].pget(
-            self.tmu + math.floor((x - 8) / 8), self.tmv + math.floor((y - 16) / 8)
+        tile = pyxel.tilemaps[self.tilemap_id].pget(
+            self.tilemap_u + math.floor((x - 8) / 8), self.tilemap_v + math.floor((y - 16) / 8)
         )
 
         if tile in SLOPE_TILES:
@@ -442,9 +442,9 @@ class Stage:
         pyxel.bltm(
             shake_x + 8,
             shake_y + 16,
-            self.tm,
-            self.tmu * 8,
-            self.tmv * 8,
+            self.tilemap_id,
+            self.tilemap_u * 8,
+            self.tilemap_v * 8,
             WIDTH_TILES * 8,
             HEIGHT_TILES * 8,
             8,

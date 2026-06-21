@@ -34,9 +34,9 @@ class Weapon:
 
     def fire(self, from_x, from_y):
         self.active = True
-        for s in self.shots:
-            s[0] = from_x
-            s[1] = from_y
+        for shot in self.shots:
+            shot[0] = from_x
+            shot[1] = from_y
 
     def update(self, player, stage):
         if not self.active:
@@ -49,14 +49,14 @@ class Weapon:
             shot_position[1] += VEL[index][1]
 
             if done != False and rect.contains_point(
-                0, 0, constants.GAME_WIDTH, constants.GAME_HEIGHT, s[0], s[1]
+                0, 0, constants.GAME_WIDTH, constants.GAME_HEIGHT, shot_position[0], shot_position[1]
             ):
                 done = False
 
             for spin in stage.spinners:
                 if not spin.is_dead:
                     if circle.overlap(
-                        s[0], s[1], SHOT_RADIUS, spin.x, spin.y, spin.radius
+                        shot_position[0], shot_position[1], SHOT_RADIUS, spin.x, spin.y, spin.radius
                     ):
                         globals.add_score(globals.SCORE_KILLED_SPINNER)
                         spin.kill()
